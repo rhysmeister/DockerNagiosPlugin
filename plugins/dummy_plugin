@@ -1,0 +1,41 @@
+#!/bin/bash
+#set -x;
+set -e;
+set -u;
+
+MSG="Default message";
+
+function finish {
+  echo "$MSG";
+  exit "$STATUS";
+}
+
+trap finish EXIT;
+
+
+if [ "$#" -ne 1 ]; then
+    MSG="Illegal number of parameters";
+    STATUS=2;
+else
+    case "$1" in
+    "OK")
+      MSG="OK: All if ok"
+      STATUS=0
+    ;;
+    "WARNING")
+      MSG="WARNING: There is a warning"
+      STATUS=1;
+    ;;
+    "CRITICAL")
+      MSG="CRITICAL: There is a critical problem"
+      STATUS=2
+    ;;
+    "UNKNOWN")
+      MSG="UNKNOWN: No idea"
+      STATUS=3
+    ;;
+    *)
+      MSG="Invalid parameter value provided to plugin"
+      STATUS=9
+  esac
+fi;

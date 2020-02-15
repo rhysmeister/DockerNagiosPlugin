@@ -1,0 +1,37 @@
+#!/usr/bin/env bats
+
+@test "Incorrect number of parameters" {
+  run ../plugins/dummy_plugin "OK" "OK" "OK"
+  [ "$status" -eq 2 ]
+  [ "$output" = "Illegal number of parameters" ]
+}
+
+@test "OK" {
+  run ../plugins/dummy_plugin "OK"
+  [ "$status" -eq 0 ]
+  [ "$output" = "OK: All if ok" ]
+}
+
+@test "WARNING" {
+  run ../plugins/dummy_plugin "WARNING"
+  [ "$status" -eq 1 ]
+  [ "$output" = "WARNING: There is a warning" ]
+}
+
+@test "CRITICAL" {
+  run ../plugins/dummy_plugin "CRITICAL"
+  [ "$status" -eq 2 ]
+  [ "$output" = "CRITICAL: There is a critical problem" ]
+}
+
+@test "UNKNOWN" {
+  run ../plugins/dummy_plugin "UNKNOWN"
+  [ "$status" -eq 3 ]
+  [ "$output" = "UNKNOWN: No idea" ]
+}
+
+@test "INVALID" {
+  run ../plugins/dummy_plugin "INVALID"
+  [ "$status" -eq 9 ]
+  [ "$output" = "Invalid parameter value provided to plugin" ]
+}
