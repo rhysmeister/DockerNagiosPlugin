@@ -7,6 +7,10 @@ echo "$(uname -a)";
 echo $(bash --version);
 echo $(bats --version);
 
+chmod 0755 /opt/entry-point.sh;
+chmod 0755 /opt/plugins/*;
+chmod 0755 /opt/tests/*;
+
 cd /opt/plugins;
 PLUGIN_COUNT=$(find . -type f | wc -l);
 

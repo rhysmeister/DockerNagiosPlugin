@@ -4,6 +4,8 @@ A Docker container to facilitate the testing of Nagios Plugins
   * Put tests in tests/. These files should have the same name as the respective plugin.
   * Tests written using the bats framework - https://github.com/sstephenson/bats
   * shellcheck is also executed against each plugin. https://github.com/koalaman/shellcheck/blob/master/README.md
+  * Bind mounts are used to provide the plugins and tests to the container.
+  * Add your own Nagios plugins and tests to these directories.
 
 # Build command
 
@@ -11,10 +13,13 @@ A Docker container to facilitate the testing of Nagios Plugins
 docker build . -t rhyscampbell/dockernagiosplugin:latest
 ```
 
-Run tests in Docker container and output to terminal
+Run tests in Docker container and output to terminal.
+
 
 ```
-docker run -ti --rm rhyscampbell/dockernagiosplugin:latest
+docker run  --mount "type=bind,src=$(pwd)/plugins,dst=/opt/plugins"\
+            --mount "type=bind,src=$(pwd)/tests,dst=/opt/tests"\
+             -ti --rm rhyscampbell/dockernagiosplugin:latest
 ```
 
 The output will look something like below if only dummy_plugin tests exist...
@@ -32,7 +37,3 @@ The output will look something like below if only dummy_plugin tests exist...
 > ok 4 CRITICAL
 > ok 5 UNKNOWN
 > ok 6 INVALID
-
-# TODO
-
-* how to copy plugins & tests at runtime? Volumes?
